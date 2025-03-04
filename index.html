@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <title>Auckland Signal Finder</title>
+    <style>
+        body,
+        html {
+            height: 100dvh;
+            width: 100dvw;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 60px;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 80px);
+            width: 100vw;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+
+        .row:last-child {
+            margin-bottom: 0;
+        }
+
+        .arrow-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .arrow {
+            width: 100px;
+            height: 100px;
+            background: url('arrow.png') center/contain no-repeat;
+            transform-origin: center;
+        }
+
+        #north {
+            width: 175px;
+            height: 175px;
+            background: url('arrow-north.png') center/contain no-repeat;
+            transform-origin: center;
+        }
+
+        .arrow-name {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .info {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .splash-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .permission-button {
+            padding: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="splash-screen">
+        <button class="permission-button" id="requestPermission">Allow Access to Motion Sensors</button>
+    </div>
+    <div class="header">
+        <h2>Auckland Signal Finder</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="arrow-container">
+                <div class="arrow" id="waiatarua"></div>
+                <div class="info" id="waiatarua-info"></div>
+                <div class="arrow-name">Waiatarua</div>
+            </div>
+            <div class="arrow-container">
+                <div class="arrow" id="skytower"></div>
+                <div class="info" id="skytower-info"></div>
+                <div class="arrow-name">Sky Tower</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="arrow-container">
+                <div class="arrow" id="north"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="arrow-container">
+                <div class="arrow" id="pinehill"></div>
+                <div class="info" id="pinehill-info"></div>
+                <div class="arrow-name">Pine Hill</div>
+            </div>
+            <div class="arrow-container">
+                <div class="arrow" id="remuera"></div>
+                <div class="info" id="remuera-info"></div>
+                <div class="arrow-name">Remuera</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('requestPermission').addEventListener('click', async function () {
+            try {
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    const permissionState = await DeviceOrientationEvent.requestPermission();
+                    if (permissionState === 'granted') {
+                        activateOrientation();
+                        document.querySelector('.splash-screen').style.display = 'none';
+                    } else {
+                        alert('Permission not granted');
+                    }
+                } else {
+                    // For browsers that do not require explicit permission request
+                    activateOrientation();
+                    document.querySelector('.splash-screen').style.display = 'none';
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error requesting permission: ' + error.message);
+            }
+        });
+
+        function activateOrientation() {
+            const arrows = document.querySelectorAll('.arrow');
+            const declination = -20.25; // Magnetic declination for Auckland, NZ
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const userCoords = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                window.addEventListener("deviceorientation", function (event) {
+                    const rotation = event.webkitCompassHeading || event.alpha || 0;
+                    const trueRotation = rotation - declination; // Adjust rotation for magnetic declination
+
+                    arrows.forEach((arrow, index) => {
+                        const id = arrow.id;
+                        const targetCoords = {
+                            'waiatarua': { lat: -36.9262519, lng: 174.5679983 },
+                            'skytower': { lat: -36.8493698, lng: 174.7586989 },
+                            'north': userCoords,
+                            'pinehill': { lat: -36.7330696, lng: 174.734787 },
+                            'remuera': { lat: -36.8810292, lng: 174.8005929 }
+                        }[id];
+
+                        if (targetCoords) {
+                            const { bearing, distance } = calculateBearingAndDistance(userCoords, targetCoords);
+                            const arrowRotation = 360 + (bearing - trueRotation);
+                            arrow.style.transform = `rotate(${arrowRotation}deg)`;
+                            const infoDiv = document.getElementById(`${id}-info`);
+                            if (id !== 'north') {
+                                infoDiv.innerHTML = `<div>Bearing: ${Math.round(bearing)}°</div><div>Distance: ${Math.round(distance)} km</div>`;
+                            }
+                        }
+                    });
+                }, true);
+            });
+        }
+
+        function calculateBearingAndDistance(fromCoords, toCoords) {
+            const R = 6371; // Earth's radius in kilometers
+            const lat1 = toRadians(fromCoords.lat);
+            const lon1 = toRadians(fromCoords.lng);
+            const lat2 = toRadians(toCoords.lat);
+            const lon2 = toRadians(toCoords.lng);
+
+            const dLat = lat2 - lat1;
+            const dLon = lon2 - lon1;
+
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c;
+
+            const y = Math.sin(dLon) * Math.cos(lat2);
+            const x = Math.cos(lat1) * Math.sin(lat2) -
+                Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+            const bearing = Math.atan2(y, x) * 180 / Math.PI;
+
+            return { bearing: (bearing + 360) % 360, distance };
+        }
+
+        function toRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        window.addEventListener('load', function () {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(function (registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(function (err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>
