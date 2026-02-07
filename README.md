@@ -13,7 +13,7 @@ Features:
 Getting Started:
 
 1. Clone the Repository:
-   git clone https://github.com/yourusername/signal-transmitter-finder.git
+   git clone https://github.com/digitalstream/PWA-Signal-Finder.git
    cd signal-transmitter-finder
 
 2. Install Dependencies (if any):
@@ -61,18 +61,13 @@ Configuration:
   Feel free to fork this repository and contribute with new features, bug fixes, or improvements. Make sure to follow the existing code style and update the README.md if necessary.
   ```
 
-Fork the Repository:
-git clone https://github.com/yourusername/signal-transmitter-finder.git
-Create a New Branch:
-git checkout -b feature/new-feature
-Commit Your Changes:
-git commit -m "Add new feature"
-Push to the Branch:
-git push origin feature/new-feature
-Create a Pull Request:
-Open a pull request on GitHub and describe your changes.
-License:
-This project is licensed under the MIT License - see the LICENSE file for details.
+Fork the Repository: `git clone https://github.com/digitalstream/PWA-Signal-Finder.git`
+Create a New Branch: `git checkout -b feature/new-feature`
+Commit Your Changes: `git commit -m "Add new feature"`
+Push to the Branch: `git push origin feature/new-feature`
+Create a Pull Request: Open a pull request on GitHub and describe your changes.
+
+License: This project is licensed under the MIT License - see the LICENSE file for details.
 
 Acknowledgments:
 
