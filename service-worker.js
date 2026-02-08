@@ -1,5 +1,5 @@
 // --- CONFIGURATION ---
-const CACHE_NAME = 'signal-finder-v3'; // Increment this to force an update on user devices
+const CACHE_NAME = 'signal-finder-v4.0'; // Increment this to force an update on user devices
 
 const FILES_TO_CACHE = [
   './',                     // The root (index.html)
