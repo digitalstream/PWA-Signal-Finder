@@ -1,16 +1,32 @@
 // --- CONFIGURATION ---
-const CACHE_NAME = 'signal-finder-v4.0'; // Increment this to force an update on user devices
+const CACHE_NAME = 'signal-finder-v5.16'; // Increment this to force an update on user devices
 
 const FILES_TO_CACHE = [
-  './',                     // The root (index.html)
+  './',
   'index.html',
-  'style.css',              // Added: Critical for styling
-  'app.js',
+
+  // Styles
+  'CSS/main.css',
+  'CSS/compass.css',
+  'CSS/transmitter.css',
+  'CSS/menu.css',
+  'CSS/about.css',
+  'CSS/glass.css',
+
+  // JavaScript modules
+  'JS/app.js',
+  'JS/compass.js',
+  'JS/menu.js',
+  'JS/wake-lock.js',
+  'JS/location.js',
+
+  // App files and transmitter data
   'manifest.json',
-  'transmitters.json',      // Added: Initial data seed
+  'transmitters.json',
   'icon.png',
-  'images/bg-shinny.jpg',   // Added: Desktop Background
-  'images/bg-shinny-sm.jpg' // Added: Mobile Background
+  'icon-192.png',
+  'icon-256.png',
+  'icon-512.png'
 ];
 
 // --- INSTALL EVENT ---

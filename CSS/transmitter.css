@@ -1,0 +1,211 @@
+/* Transmitter sheet. Load after main.css and compass.css. */
+
+#siteInfoBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+  background: rgba(0, 0, 0, 0.46);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 280ms ease, visibility 0s linear 280ms;
+}
+
+#siteInfoBackdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+#siteInfoPanel {
+  box-sizing: border-box;
+  position: fixed;
+  top: max(64px, env(safe-area-inset-top));
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 6100;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: #1a1a1a;
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.2);
+  transform: translateY(calc(100% + 2px));
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 320ms;
+}
+
+#siteInfoPanel.active {
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+#siteInfoContent {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  cursor: pointer;
+  scrollbar-width: thin;
+  scrollbar-color: #454545 transparent;
+}
+
+#siteInfoContent::-webkit-scrollbar {
+  width: 4px;
+}
+
+#siteInfoContent::-webkit-scrollbar-thumb {
+  background: #454545;
+  border-radius: 4px;
+}
+
+/* The chevron is also an accessible close button, with no visible label. */
+.site-sheet-close {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: #1a1a1a;
+  color: #aaaeb2;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-sheet-close svg {
+  width: 56px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.site-sheet-close:focus-visible {
+  outline: 2px solid var(--pointer-color, #ffe000);
+  outline-offset: -5px;
+}
+
+.site-sheet-body {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 2px 24px calc(24px + env(safe-area-inset-bottom));
+}
+
+.site-heading {
+  text-align: center;
+}
+
+.site-heading h3 {
+  margin: 0;
+  color: #f1f2f3;
+  font-size: clamp(1.375rem, 5vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.site-heading p {
+  margin: 6px 0 0;
+  color: #aaaeb2;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.site-aiming {
+  display: grid;
+  place-items: center;
+  margin: 10px 0;
+}
+
+#siteInfoPanel .site-pointer {
+  width: clamp(136px, 24dvh, 240px);
+  height: clamp(136px, 24dvh, 240px);
+  margin: 0;
+}
+
+.site-pointer .pointer-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.site-summary {
+  display: flex;
+  justify-content: center;
+  gap: clamp(28px, 10vw, 64px);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.site-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.site-summary strong {
+  color: #f1f2f3;
+  font-size: 1.625rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.site-summary small {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #aaaeb2;
+}
+
+.site-summary span {
+  color: #aaaeb2;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.site-details {
+  margin: 24px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.site-details > div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.site-details dt {
+  color: #aaaeb2;
+}
+
+.site-details dd {
+  margin: 0;
+  color: #f1f2f3;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #siteInfoPanel,
+  #siteInfoBackdrop {
+    transition: none;
+  }
+}

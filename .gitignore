@@ -1,0 +1,28 @@
+# Local secrets and private key material
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Archived versions and local backups
+/SFv3.0/
+/Backups/
+/backups/
+*.zip
+*.bak
+*.tmp
+*.log
+
+# Operating-system files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Local development tools
+node_modules/
+.vscode/
+.idea/
+/github-preparation/

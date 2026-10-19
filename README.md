@@ -1,75 +1,61 @@
-Signal Transmitter Finder PWA
+# Signal Finder PWA
 
-This is a Progressive Web Application (PWA) designed to help users find nearby signal transmitters based on their current location. The application utilizes HTML, CSS, JavaScript, and geolocation APIs to provide an interactive experience.
+**Version 5.16**
 
-Features:
+A mobile web app for finding New Zealand TV transmitters and calculating the direction to point an antenna.
 
-- Compass Rotation: The app dynamically rotates the compass needle based on the device's orientation and direction of nearby transmitters.
-- Geolocation: Automatically detects the user's location using the Geolocation API.
-- Transmitter Display: Shows arrows representing signal transmitters with their bearing and distance from the user.
-- Dropdown Filter: Allows users to filter transmitters by area.
-- Responsive Design: Works seamlessly on both desktop and mobile devices.
+[Open the live app](https://signalfinder.bettermediahub.com/)
 
-Getting Started:
+## What it does
 
-1. Clone the Repository:
-   git clone https://github.com/digitalstream/PWA-Signal-Finder.git
-   cd signal-transmitter-finder
+- Shows the closest four transmitters by default, with true bearing and distance.
+- Supports area selection. Auckland shows Sky Tower, Remuera, Pine Hill and Waiatarua in the overview.
+- Opens a larger transmitter view with a live arrow and site information. Swipe left or right to browse every transmitter in that area, including Waiheke.
+- Converts magnetic compass readings to true north using an offline WMM2025 implementation.
+- Handles Safari compass readings and Android Chrome absolute orientation events through separate sensor paths.
+- Uses orientation geometry, exponential smoothing and continuous rotation through north to keep arrows steady and responsive.
+- Requests high-accuracy location updates, checks reading quality and filters small drift or temporarily worse fixes.
+- Pauses location tracking in the background and requests fresh readings on return.
+- Includes optional screen wake lock, with reacquisition after returning to the app.
+- Uses service-worker caching for offline access once the required files and transmitter data have been cached.
 
-2. Install Dependencies (if any):
-   This PWA is static and does not require additional node modules, but if there are any dependencies, you can install them using:
-   npm install
+## Architecture
 
-3. Run the Application:
-   Open the index.html file in a web browser. Alternatively, use a local server to serve the files:
-   npx http-server
+The app uses native browser APIs and ES modules. It has no JavaScript package dependencies or build step.
 
-4. Permissions:
-   - Ensure that location services are enabled on your device.
-   - On iOS devices, you may need to grant permission for motion and orientation access.
+| File | Responsibility |
+| --- | --- |
+| `JS/app.js` | Transmitter selection, bearings and distances, SVG arrows, details sheet and page behaviour |
+| `JS/compass.js` | Sensor permissions, heading calculations, smoothing and WMM2025 magnetic declination |
+| `JS/location.js` | Location watching, accuracy checks, drift filtering and lifecycle handling |
+| `JS/menu.js` | Settings drawer and keep-awake control |
+| `JS/wake-lock.js` | Screen Wake Lock API lifecycle |
+| `CSS/` | Page, compass, transmitter, menu, About and glass styling |
+| `transmitters.json` | Transmitter coordinates and site information |
+| `service-worker.js` | App-shell cache and network-first transmitter-data retrieval |
 
-Usage:
+## Running the app
 
-1. Permission Request: Upon loading the app, a permission request will be made for accessing motion and orientation sensors. Grant this permission for optimal functionality.
-2. Transmitter Display: Once location is detected, arrows representing nearby transmitters will appear on the screen. Hover over or tap on an arrow to get more details.
-3. Filter Transmitters: Use the dropdown menu to filter transmitters by area.
+Clone this repository and serve the project root with a static web server. No package installation is required.
 
-Configuration:
+Use HTTPS for phone testing. Localhost is suitable for development on the computer itself; opening the HTML file directly is not the supported workflow for ES modules and sensor APIs. The user must allow location and motion access, and the device must provide the required sensors.
 
-- Transmitter Data: The app uses a transmitters.json file for storing transmitter data. You can modify this file to include your own transmitter information.
+Folder names are case-sensitive on many hosts: use `JS/` and `CSS/` consistently. The included `web.config` provides IIS hosting rules; it is not required by other web servers.
 
-  ```json
-  [
-    {
-      "id": "1",
-      "name": "Transmitter A",
-      "lat": 37.7749,
-      "lng": -122.4194,
-      "area": "Area X"
-    },
-    {
-      "id": "2",
-      "name": "Transmitter B",
-      "lat": 37.7750,
-      "lng": -122.4195,
-      "area": "Area Y"
-    }
-    // Add more transmitters as needed
-  ]
+When changing app files, update the cache version in `service-worker.js` and keep its file list in sync with the deployed site.
 
-  Contributing:
-  Feel free to fork this repository and contribute with new features, bug fixes, or improvements. Make sure to follow the existing code style and update the README.md if necessary.
-  ```
+## Current status
 
-Fork the Repository: `git clone https://github.com/digitalstream/PWA-Signal-Finder.git`
-Create a New Branch: `git checkout -b feature/new-feature`
-Commit Your Changes: `git commit -m "Add new feature"`
-Push to the Branch: `git push origin feature/new-feature`
-Create a Pull Request: Open a pull request on GitHub and describe your changes.
+The base interface and navigation features are implemented. Simulated location and compass checks have been run during development. Outdoor alignment checks and physical-device/offline validation remain to be completed.
 
-License: This project is licensed under the MIT License - see the LICENSE file for details.
+WMM2025 covers dates from 2025 through 2029; the magnetic model must be updated for 2030 onward. Phone sensor quality and reported location accuracy affect alignment.
 
-Acknowledgments:
+Augmented reality is the next planned development stage. A camera overlay is not implemented in this version.
 
-Special thanks to the contributors who have helped improve this PWA.
-Inspiration from various open-source projects focused on location-based services.
+## Data and model
+
+Transmitter information is maintained in `transmitters.json`. Magnetic-model coefficients are NOAA/BGS WMM2025 data, with the field calculations implemented locally in JavaScript. See the [official World Magnetic Model documentation](https://www.ncei.noaa.gov/products/world-magnetic-model).
+
+## Licence review
+
+The earlier README described this project as MIT licensed, but this checkout has no matching LICENSE file. Confirm the intended reuse terms before adding a licence file or changing that statement. No new licence grant is made by this README draft.

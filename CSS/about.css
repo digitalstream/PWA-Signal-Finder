@@ -1,0 +1,126 @@
+/* About panel. Load after the shared styles. */
+
+#aboutOverlay {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  z-index: 5800;
+  display: none;
+  justify-content: center;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#aboutPanelContent {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 680px;
+  height: calc(100dvh - max(64px, env(safe-area-inset-top)));
+  padding: 28px 24px calc(28px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #454545 transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: #1a1a1a;
+  color: #f1f2f3;
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.2);
+  animation: about-enter 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#aboutPanelContent h2 {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.about-tagline {
+  margin: 8px 0 30px;
+  color: #aaaeb2;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.about-section + .about-section {
+  margin-top: 30px;
+}
+
+.about-section h4 {
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  color: var(--pointer-color, #ffe000);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+.about-section p {
+  margin: 0;
+  color: #b8bcc0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.about-section strong {
+  color: #f1f2f3;
+  font-weight: 500;
+}
+
+.about-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.tech-badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #aaaeb2;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+
+.about-actions {
+  margin-top: 32px;
+}
+
+#about-close-btn {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 224, 0, 0.25);
+  border-radius: 12px;
+  background: rgba(255, 224, 0, 0.035);
+  color: var(--pointer-color, #ffe000);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#about-close-btn:focus-visible {
+  outline: 2px solid var(--pointer-color, #ffe000);
+  outline-offset: 4px;
+}
+
+@keyframes about-enter {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #aboutPanelContent { animation: none; }
+}

@@ -1,0 +1,123 @@
+/* Shared page styles. Load before compass.css. */
+
+/* --- Variables (Unified with Radio PWA) --- */
+:root {
+  /* Glassmorphism Colors */
+  --glass-bg: rgba(0, 0, 0, 0.6);
+  --glass-bg-dark: rgba(0, 0, 0, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* HUD Colors */
+  --hud-color: #00ffcc; /* Cyan/Teal for high-tech look */
+  --text-color: white;
+  --text-muted: rgba(255, 255, 255, 0.7);
+
+  /* Layout */
+  --border-radius: 20px;
+  --font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+}
+
+/* --- Base Styles --- */
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  /* Use 100% instead of dvw to prevent horizontal scrollbar glitches */
+  width: 100%;
+  height: 100dvh; /* Keep height dynamic for mobile URL bars */
+
+  font-family: var(--font-family);
+  color: var(--text-color);
+
+  /* Page background */
+  background-color: #1a1a1a;
+
+  /* CRITICAL LOCKDOWN RULES: */
+  overflow: hidden; /* Cut off anything outside */
+  overscroll-behavior: none; /* Stop "Rubber-banding" / Bouncing */
+  position: fixed; /* Force the body to stay put */
+  top: 0;
+  left: 0;
+}
+
+/* --- Splash Screen (Permission Gate) --- */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.permission-button {
+  background: var(--glass-bg);
+  border: 1px solid var(--hud-color);
+  color: var(--hud-color);
+  padding: 20px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.permission-button:hover {
+  background: var(--hud-color);
+  color: black;
+  box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
+}
+
+/* --- Header --- */
+.header {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 5000;
+  /* Optional: Glass header background */
+  /* background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); */
+}
+
+.header h2 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin-right: 40px; /* Balance the menu button space */
+}
+
+/* Mobile Tweak */
+@media (max-width: 768px) {
+  .permission-button {
+    /* Make it smaller */
+    padding: 15px 20px;
+    font-size: 0.9rem;
+
+    /* Stop it from touching the edges */
+    width: 80%;
+    max-width: 300px;
+
+    /* Center text just in case it wraps */
+    text-align: center;
+    line-height: 1.4;
+  }
+
+}
