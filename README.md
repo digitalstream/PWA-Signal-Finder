@@ -1,6 +1,6 @@
 # Signal Finder PWA
 
-**Version 5.16**
+**Version 5.17**
 
 A mobile web app for finding New Zealand TV transmitters and calculating the direction to point an antenna.
 

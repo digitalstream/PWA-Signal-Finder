@@ -1,5 +1,5 @@
 // --- CONFIGURATION ---
-const CACHE_NAME = 'signal-finder-v5.16'; // Increment this to force an update on user devices
+const CACHE_NAME = 'signal-finder-v5.17'; // Increment this to force an update on user devices
 
 const FILES_TO_CACHE = [
   './',
@@ -26,7 +26,13 @@ const FILES_TO_CACHE = [
   'icon.png',
   'icon-192.png',
   'icon-256.png',
-  'icon-512.png'
+  'icon-512.png',
+
+  // Installation screenshots
+  'icons/splash-320.png',
+  'icons/splashDesktop.png',
+  'icons/splashMobile.png',
+  'icons/wide.png'
 ];
 
 // --- INSTALL EVENT ---
