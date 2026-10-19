@@ -56,6 +56,6 @@ Augmented reality is the next planned development stage. A camera overlay is not
 
 Transmitter information is maintained in `transmitters.json`. Magnetic-model coefficients are NOAA/BGS WMM2025 data, with the field calculations implemented locally in JavaScript. See the [official World Magnetic Model documentation](https://www.ncei.noaa.gov/products/world-magnetic-model).
 
-## Licence review
+## Licence
 
-The earlier README described this project as MIT licensed, but this checkout has no matching LICENSE file. Confirm the intended reuse terms before adding a licence file or changing that statement. No new licence grant is made by this README draft.
+This project is licensed under the [MIT Licence](LICENSE).
